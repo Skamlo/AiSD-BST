@@ -66,6 +66,78 @@ Node *leftRotation(Node *node)
     return newroot;
 }
 
+Node *insertNode(Node *root, int key)
+{
+    if (root == nullptr)
+    {
+        return createNode(key);
+    }
+
+    if (key < root->key)
+    {
+        root->left = insertNode(root->left, key);
+    }
+    else if (key > root->key)
+    {
+        root->right = insertNode(root->right, key);
+    }
+    else
+    {
+        return root;
+    }
+
+    updateHeight(root);
+
+    int balanceCoef = balanceCoefficient(root);
+
+    // LL case
+    if (balanceCoef > 1 && key < root->left->key)
+    {
+        return rightRotation(root);
+    }
+
+    // RR case
+    if (balanceCoef < -1 && key > root->right->key)
+    {
+        return leftRotation(root);
+    }
+
+    // LR case
+    if (balanceCoef > 1 && key > root->left->key)
+    {
+        root->left = leftRotation(root->left);
+        return rightRotation(root);
+    }
+
+    // RL case
+    if (balanceCoef < -1 && key < root->right->key)
+    {
+        root->right = rightRotation(root->right);
+        return leftRotation(root);
+    }
+
+    return root;
+}
+
+Node *constructAVL(int arr[], int start, int end)
+{
+    if (start > end)
+    {
+        return nullptr;
+    }
+
+    int sizeOfArray = sizeof(arr) / sizeof(arr[0]);
+    int median = 0.5 * (arr[(sizeOfArray - 1) / 2] + arr[sizeOfArray / 2]);
+    Node *root = createNode(arr[median]);
+
+    root->left = constructAVL(arr, start, median - 1);
+    root->right = constructAVL(arr, median + 1, end);
+
+    updateHeight(root);
+
+    return root;
+}
+
 void inorder(Node *root)
 {
     if (root = nullptr)
