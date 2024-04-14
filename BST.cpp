@@ -1,85 +1,76 @@
 #include <iostream>
+#include <vector>
+#include "BST.h"
 
-// konstruowanie drzewa BST
 
-struct Node
+NodeBST *createNodeBST(int value)
 {
-    int key;
-    Node *left;
-    Node *right;
-};
-
-Node *createNode(int value)
-{
-    Node *newNode = new Node();
+    NodeBST *newNode = new NodeBST();
     newNode->key = value;
     newNode->left = nullptr;
     newNode->right = nullptr;
     return newNode;
 }
 
-Node *insert(Node *root, int key)
+
+NodeBST *insertBST(NodeBST *root, int key)
 {
     if (root == nullptr)
     {
-        return createNode(key);
+        return createNodeBST(key);
     }
 
     if (key < root->key)
     {
-        root->left = insert(root->left, key);
+        root->left = insertBST(root->left, key);
     }
 
     else if (key >= root->key)
     {
-        root->right = insert(root->right, key);
+        root->right = insertBST(root->right, key);
     }
 
     return root;
 }
 
-// funkcje odpowidzialne za trawersowanie
 
-void inorder(Node *root)
+void inorderBST(NodeBST *root)
 {
-    if (root = nullptr)
-    {
+    if (root == nullptr)
         return;
-    }
-    inorder(root->left);
-    std::cout << root->key << " ";
-    inorder(root->right);
+    inorderBST(root->left);
+    std::cout << root->key << "\t";
+    inorderBST(root->right);
 }
 
-void postorder(Node *root)
+
+void postorderBST(NodeBST *root)
 {
-    if (root = nullptr)
-    {
+    if (root == nullptr)
         return;
-    }
-    postorder(root->left);
-    postorder(root->right);
-    std::cout << root->key << " ";
+    postorderBST(root->left);
+    postorderBST(root->right);
+    std::cout << root->key << "\t";
 }
 
-void preorder(Node *root)
+
+void preorderBST(NodeBST *root)
 {
-    if (root = nullptr)
-    {
+    if (root == nullptr)
         return;
-    }
-    std::cout << root->key << " ";
-    preorder(root->left);
-    preorder(root->right);
+    std::cout << root->key << "\t";
+    preorderBST(root->left);
+    preorderBST(root->right);
 }
 
-Node *createBST(int arr[], int n)
-{
-    Node *root = nullptr;
 
-    for (int i = 0; i < n; ++i)
+NodeBST *createBST(std::vector<int> &arr)
+{
+    NodeBST *root = nullptr;
+
+    for (int i = 0; i < arr.size(); ++i)
     {
-        root = insert(root, arr[i]);
+        root = insertBST(root, arr[i]);
     }
     return root;
 }

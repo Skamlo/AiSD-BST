@@ -1,17 +1,12 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include "AVL.h"
 
-struct Node
-{
-    int key;
-    Node *left;
-    Node *right;
-    int height;
-};
 
-Node *createNode(int value)
+NodeAVL *createNodeAVL(int value)
 {
-    Node *newNode = new Node();
+    NodeAVL *newNode = new NodeAVL();
     newNode->key = value;
     newNode->left = nullptr;
     newNode->right = nullptr;
@@ -19,7 +14,8 @@ Node *createNode(int value)
     return newNode;
 }
 
-int getNodeHeight(Node *node)
+
+int getNodeHeight(NodeAVL *node)
 {
     if (node == nullptr)
     {
@@ -28,7 +24,8 @@ int getNodeHeight(Node *node)
     return node->height;
 }
 
-int balanceCoefficient(Node *node)
+
+int balanceCoefficient(NodeAVL *node)
 {
     if (node == nullptr)
     {
@@ -37,14 +34,16 @@ int balanceCoefficient(Node *node)
     return getNodeHeight(node->left) - getNodeHeight(node->right);
 }
 
-void updateHeight(Node *node)
+
+void updateHeight(NodeAVL *node)
 {
     node->height = 1 + std::max(getNodeHeight(node->left), getNodeHeight(node->right));
 }
 
-Node *rightRotation(Node *node)
+
+NodeAVL *rightRotation(NodeAVL *node)
 {
-    Node *newroot = node->left;
+    NodeAVL *newroot = node->left;
     node->left = newroot->right;
     newroot->right = node;
 
@@ -54,9 +53,10 @@ Node *rightRotation(Node *node)
     return newroot;
 }
 
-Node *leftRotation(Node *node)
+
+NodeAVL *leftRotation(NodeAVL *node)
 {
-    Node *newroot = node->right;
+    NodeAVL *newroot = node->right;
     node->right = newroot->left;
     newroot->left = node;
 
@@ -66,11 +66,12 @@ Node *leftRotation(Node *node)
     return newroot;
 }
 
-Node *insertNode(Node *root, int key)
+
+NodeAVL *insertNode(NodeAVL *root, int key)
 {
     if (root == nullptr)
     {
-        return createNode(key);
+        return createNodeAVL(key);
     }
 
     if (key < root->key)
@@ -119,54 +120,51 @@ Node *insertNode(Node *root, int key)
     return root;
 }
 
-Node *constructAVL(int arr[], int start, int end)
+
+NodeAVL *createAVL(std::vector<int> &arr, int start, int end)
 {
     if (start > end)
     {
         return nullptr;
     }
 
-    int sizeOfArray = sizeof(arr) / sizeof(arr[0]);
-    int median = 0.5 * (arr[(sizeOfArray - 1) / 2] + arr[sizeOfArray / 2]);
-    Node *root = createNode(arr[median]);
+    int median = (start + end) / 2;
+    NodeAVL *root = createNodeAVL(arr[median]);
 
-    root->left = constructAVL(arr, start, median - 1);
-    root->right = constructAVL(arr, median + 1, end);
+    root->left = createAVL(arr, start, median - 1);
+    root->right = createAVL(arr, median + 1, end);
 
     updateHeight(root);
 
     return root;
 }
 
-void inorder(Node *root)
+
+void inorderAVL(NodeAVL *root)
 {
-    if (root = nullptr)
-    {
+    if (root == nullptr)
         return;
-    }
-    inorder(root->left);
+    inorderAVL(root->left);
     std::cout << root->key << " ";
-    inorder(root->right);
+    inorderAVL(root->right);
 }
 
-void postorder(Node *root)
+
+void postorderAVL(NodeAVL *root)
 {
-    if (root = nullptr)
-    {
+    if (root == nullptr)
         return;
-    }
-    postorder(root->left);
-    postorder(root->right);
+    postorderAVL(root->left);
+    postorderAVL(root->right);
     std::cout << root->key << " ";
 }
 
-void preorder(Node *root)
+
+void preorderAVL(NodeAVL *root)
 {
-    if (root = nullptr)
-    {
+    if (root == nullptr)
         return;
-    }
     std::cout << root->key << " ";
-    preorder(root->left);
-    preorder(root->right);
+    preorderAVL(root->left);
+    preorderAVL(root->right);
 }
