@@ -107,8 +107,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "\naction> ";
         std::getline(std::cin, option);
-
-        if (option == "FindMinMax" || option == "findMinMax" || option == "findminmax")
+        if (stringToLowercase(option) == "findminmax")
         {
             if (treeType == BST)
                 findMinMaxBST(rootBST);
@@ -116,23 +115,23 @@ int main(int argc, char *argv[])
                 // Nie działa (chuj wie o co chodzi)
                 findMinMaxAVL(rootAVL);
         }
-        else if (option == "Print" || option == "print")
+        else if (stringToLowercase(option) == "print")
         {
             if (treeType == BST)
                 printBST(rootBST);
             else if (treeType == AVL)
                 printAVL(rootAVL);
         }
-        else if (option == "Delete" || option == "delete")
+        else if (stringToLowercase(option) == "delete")
         {
         }
-        else if (option == "Delete All" || option == "delete all")
+        else if (stringToLowercase(option) == "delete all")
         {
         }
-        else if (option == "Rebalance" || option == "rebalance")
+        else if (stringToLowercase(option) == "rebalance")
         {
         }
-        else if (option == "Help" || option == "help")
+        else if (stringToLowercase(option) == "help")
         {
             std::cout << "Help         Show this message" << std::endl
                       << "Print        Print the tree usin In-order, Pre-order, Post-order" << std::endl
@@ -141,7 +140,7 @@ int main(int argc, char *argv[])
                       << "Rebalance    Rebalance the tree" << std::endl
                       << "Exit         Exits the program (same as ctrl+D)" << std::endl;
         }
-        else if (option == "Exit" || option == "exit")
+        else if (stringToLowercase(option) == "exit")
         {
             break;
         }
