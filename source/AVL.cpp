@@ -4,17 +4,6 @@
 #include "AVL.h"
 
 
-NodeAVL *createNodeAVL(int value)
-{
-    NodeAVL *newNode = new NodeAVL();
-    newNode->key = value;
-    newNode->left = nullptr;
-    newNode->right = nullptr;
-    newNode->height = 1;
-    return newNode;
-}
-
-
 int getNodeHeight(NodeAVL *node)
 {
     if (node == nullptr)
@@ -32,6 +21,17 @@ int balanceCoefficient(NodeAVL *node)
         return 0;
     }
     return getNodeHeight(node->left) - getNodeHeight(node->right);
+}
+
+
+NodeAVL *createNodeAVL(int value)
+{
+    NodeAVL *newNode = new NodeAVL();
+    newNode->key = value;
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+    newNode->height = 1;
+    return newNode;
 }
 
 
@@ -128,13 +128,12 @@ NodeAVL *createAVL(std::vector<int> &arr, int start, int end)
         return nullptr;
     }
 
-    int median = (start + end) / 2;
-    NodeAVL *root = createNodeAVL(arr[median]);
+    NodeAVL *root = nullptr;
 
-    root->left = createAVL(arr, start, median - 1);
-    root->right = createAVL(arr, median + 1, end);
-
-    updateHeight(root);
+    for(int i=0; i<arr.size(); i++)
+    {
+        root = insertNode(root, arr[i]);
+    }
 
     return root;
 }

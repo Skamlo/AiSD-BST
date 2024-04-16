@@ -4,6 +4,7 @@
 
 struct NodeBST
 {
+    public:
     int key;
     NodeBST *left;
     NodeBST *right;

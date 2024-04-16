@@ -6,68 +6,21 @@
 #include "AVL.h"
 #include "menuFunctions.h"
 
+#define PLACEHOLDER 0
 #define AVL 1
 #define BST 2
 
-int treeType = NAN;
+int treeType = PLACEHOLDER;
 
-bool textValidation(std::string *numbers)
-{
-    std::string newNumbers;
-    int lastIndex = -1;
-    for (int i = 0; i < numbers->size(); i++)
-    {
-        if ((*numbers)[i] == ' ')
-        {
-            if (lastIndex != -1)
-            {
-                if (newNumbers[lastIndex] != ' ')
-                {
-                    newNumbers += ' ';
-                    lastIndex += 1;
-                }
-            }
-        }
-        else if ((*numbers)[i] >= '0' && (*numbers)[i] <= '9')
-        {
-            newNumbers += (*numbers)[i];
-            lastIndex += 1;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    *numbers = newNumbers;
-    return true;
-}
-
-void convertNodes(std::vector<int> *nodes, std::string numbers)
-{
-    int currentNumber = 0;
-    for (int i = 0; i < numbers.size(); i++)
-    {
-        if (numbers[i] == ' ')
-        {
-            nodes->push_back(currentNumber);
-            currentNumber = 0;
-        }
-        else if (numbers[i] >= '0' && numbers[i] <= '9')
-        {
-            currentNumber = currentNumber * 10 + (numbers[i] - '0');
-        }
-    }
-    nodes->push_back(currentNumber);
-}
 
 int main(int argc, char *argv[])
 {
     // loading tree type
     if (argc >= 3)
     {
-        if (!std::strcmp(argv[1], "--tree") && !std::strcmp(argv[2], "AVL"))
+        if ((!std::strcmp(argv[1], "--tree") || !std::strcmp(argv[1], "-t")) && !std::strcmp(argv[2], "AVL"))
             treeType = AVL;
-        else if (!std::strcmp(argv[1], "--tree") && !std::strcmp(argv[2], "BST"))
+        else if ((!std::strcmp(argv[1], "--tree") || !std::strcmp(argv[1], "-t")) && !std::strcmp(argv[2], "BST"))
             treeType = BST;
         else
         {
@@ -107,40 +60,78 @@ int main(int argc, char *argv[])
     {
         std::cout << "\naction> ";
         std::getline(std::cin, option);
-        if (stringToLowercase(option) == "findminmax")
+        option = stringToLowercase(option);
+        if (option == "findminmax")
         {
             if (treeType == BST)
                 findMinMaxBST(rootBST);
             else if (treeType == AVL)
-                // Nie działa (chuj wie o co chodzi)
                 findMinMaxAVL(rootAVL);
         }
-        else if (stringToLowercase(option) == "print")
+        else if (option == "print")
         {
             if (treeType == BST)
                 printBST(rootBST);
             else if (treeType == AVL)
                 printAVL(rootAVL);
         }
-        else if (stringToLowercase(option) == "delete")
+        else if (option == "delete")
         {
+            std::cout << "Enter the node key you want to delete: ";
+            std::string keyString;
+            std::getline(std::cin, keyString);
+            int key = strToInt(keyString);
+            
+            if (treeType == BST)
+            {
+                if (checkIfKeyExistBST(rootBST, key))
+                {
+                    deleteNodeBST(rootBST, key);
+                    std::cout << "Key " << key << " was successfully deleted.\n";
+                }
+                else
+                    std::cout << "Node with key " << key << " does not exist.\n";
+            }
+            else if (treeType == AVL)
+            {
+                if (checkIfKeyExistAVL(rootAVL, key))
+                {
+                    deleteNodeAVL(rootAVL, key);
+                    std::cout << "Key " << key << " was successfully deleted.\n";
+                }
+                else
+                    std::cout << "Node with key " << key << " does not exist.\n";
+            }
         }
-        else if (stringToLowercase(option) == "delete all")
+        else if (option == "delete all" || option == "deleteall")
         {
+            if (treeType == BST)
+            {
+                delete rootBST;
+                std::cout << "BST tree was sucessfuly deleted.\n";
+            }
+            else if (treeType == AVL)
+            {
+                delete rootAVL;
+                std::cout << "AVL tree was sucessfuly deleted.\n";
+            }
+            break;
         }
-        else if (stringToLowercase(option) == "rebalance")
+        else if (option == "rebalance")
         {
+            // cholibka
         }
-        else if (stringToLowercase(option) == "help")
+        else if (option == "help")
         {
             std::cout << "Help         Show this message" << std::endl
                       << "Print        Print the tree usin In-order, Pre-order, Post-order" << std::endl
+                      << "FindMinMax   Find min and max values in tree" << std::endl
                       << "Delete       Delete elements of the tree" << std::endl
                       << "Delete All   Delete whole tree" << std::endl
                       << "Rebalance    Rebalance the tree" << std::endl
-                      << "Exit         Exits the program (same as ctrl+D)" << std::endl;
+                      << "Exit         Exits the program" << std::endl;
         }
-        else if (stringToLowercase(option) == "exit")
+        else if (option == "exit")
         {
             break;
         }
