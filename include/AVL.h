@@ -1,10 +1,10 @@
-# pragma once
+#pragma once
 
 #include <vector>
 
 struct NodeAVL
 {
-    public:
+public:
     int key;
     NodeAVL *left;
     NodeAVL *right;
@@ -19,3 +19,6 @@ NodeAVL *createAVL(std::vector<int> &arr, int start, int end);
 void inorderAVL(NodeAVL *root);
 void postorderAVL(NodeAVL *root);
 void preorderAVL(NodeAVL *root);
+bool checkIfKeyExistAVL(NodeAVL *root, int key);
+NodeAVL *deleteNodeAVL(NodeAVL *root, int key);
+void findMinMaxAVL(NodeAVL *node);

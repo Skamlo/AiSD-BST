@@ -12,7 +12,6 @@
 
 int treeType = PLACEHOLDER;
 
-
 int main(int argc, char *argv[])
 {
     // loading tree type
@@ -81,7 +80,7 @@ int main(int argc, char *argv[])
             std::string keyString;
             std::getline(std::cin, keyString);
             int key = strToInt(keyString);
-            
+
             if (treeType == BST)
             {
                 if (checkIfKeyExistBST(rootBST, key))
