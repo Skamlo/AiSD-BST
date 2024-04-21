@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "BST.h"
 
 NodeBST *createNodeBST(int value)
@@ -88,6 +89,24 @@ NodeBST *deleteNodeBST(NodeBST *root, int key)
         delete succ;
         return root;
     }
+}
+
+// REBALANSOWANIE NIE DZIALA: SEG. FAULT
+
+NodeBST *rotateRight(NodeBST *node)
+{
+    NodeBST *temp = node->left;
+    node->left = temp->right;
+    temp->right = node;
+    return temp;
+}
+
+NodeBST *rotateLeft(NodeBST *node)
+{
+    NodeBST *temp = node->right;
+    node->right = temp->left;
+    temp->left = node;
+    return temp;
 }
 
 void inorderBST(NodeBST *root)
