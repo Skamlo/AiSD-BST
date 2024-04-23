@@ -124,8 +124,15 @@ int main(int argc, char *argv[])
         }
         else if (option == "rebalance")
         {
-            rootBST = balanceBST(rootBST);
-            std::cout << "BST tree was sucessfuly rebalanced.\n";
+            if (treeType == BST)
+            {
+                rootBST = balanceBST(rootBST);
+                std::cout << "BST tree was sucessfuly rebalanced.\n";
+            }
+            else if (treeType == AVL)
+            {
+                std::cout << "This command does not exist." << std::endl;
+            }
         }
         else if (option == "help")
         {
