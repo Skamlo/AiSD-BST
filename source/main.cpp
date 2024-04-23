@@ -11,6 +11,7 @@
 #define BST 2
 
 int treeType = PLACEHOLDER;
+bool isValidInputValues = true;
 
 int main(int argc, char *argv[])
 {
@@ -41,9 +42,14 @@ int main(int argc, char *argv[])
     std::getline(std::cin, loadValues);
 
     if (textValidation(&loadValues))
+    {
         convertNodes(&nodes, loadValues);
+    }
     else
-        std::cout << "Incorrect input values" << std::endl;
+    {
+        std::cout << "Incorrect input values\n" << std::endl;
+        isValidInputValues = false;
+    }
 
     // creating the tree
     NodeBST *rootBST = new NodeBST();
@@ -55,7 +61,7 @@ int main(int argc, char *argv[])
 
     // Menu
     std::string option;
-    while (true)
+    while (isValidInputValues)
     {
         std::cout << "\naction> ";
         std::getline(std::cin, option);
@@ -119,6 +125,7 @@ int main(int argc, char *argv[])
         else if (option == "rebalance")
         {
             rootBST = balanceBST(rootBST);
+            std::cout << "BST tree was sucessfuly rebalanced.\n";
         }
         else if (option == "help")
         {
@@ -126,9 +133,10 @@ int main(int argc, char *argv[])
                       << "Print        Print the tree usin In-order, Pre-order, Post-order" << std::endl
                       << "FindMinMax   Find min and max values in tree" << std::endl
                       << "Delete       Delete elements of the tree" << std::endl
-                      << "Delete All   Delete whole tree" << std::endl
-                      << "Rebalance    Rebalance the tree" << std::endl
-                      << "Exit         Exits the program" << std::endl;
+                      << "Delete All   Delete whole tree" << std::endl;
+            if (treeType == BST)
+                std::cout << "Rebalance    Rebalance the tree" << std::endl;
+            std::cout << "Exit         Exits the program" << std::endl;
         }
         else if (option == "exit")
         {
