@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         }
         else if (option == "rebalance")
         {
-            // cholibka
+            rootBST = balanceBST(rootBST);
         }
         else if (option == "help")
         {

@@ -91,22 +91,62 @@ NodeBST *deleteNodeBST(NodeBST *root, int key)
     }
 }
 
-// REBALANSOWANIE NIE DZIALA: SEG. FAULT
-
-NodeBST *rotateRight(NodeBST *node)
+int bstToVine(NodeBST *grand)
 {
-    NodeBST *temp = node->left;
-    node->left = temp->right;
-    temp->right = node;
-    return temp;
+    int count = 0;
+    NodeBST *tmp = grand->right;
+    while (tmp)
+    {
+        if (tmp->left)
+        {
+            NodeBST *oldTmp = tmp;
+            tmp = tmp->left;
+            oldTmp->left = tmp->right;
+            tmp->right = oldTmp;
+            grand->right = tmp;
+        }
+        else
+        {
+            count++;
+            grand = tmp;
+            tmp = tmp->right;
+        }
+    }
+
+    return count;
 }
 
-NodeBST *rotateLeft(NodeBST *node)
+void compress(NodeBST *grand, int m)
 {
-    NodeBST *temp = node->right;
-    node->right = temp->left;
-    temp->left = node;
-    return temp;
+    NodeBST *tmp = grand->right;
+
+    for (int i = 0; i < m; i++)
+    {
+        NodeBST *oldTmp = tmp;
+        tmp = tmp->right;
+        grand->right = tmp;
+        oldTmp->right = tmp->left;
+        tmp->left = oldTmp;
+        grand = tmp;
+        tmp = tmp->right;
+    }
+}
+
+NodeBST *balanceBST(NodeBST *root)
+{
+    NodeBST *grand = createNodeBST(0);
+
+    grand->right = root;
+
+    int count = bstToVine(grand);
+    int m = pow(2, log2(count + 1)) - 1;
+    compress(grand, count - m);
+
+    for (m = m / 2; m > 0; m /= 2)
+    {
+        compress(grand, m);
+    }
+    return grand->right;
 }
 
 void inorderBST(NodeBST *root)

@@ -17,5 +17,4 @@ void preorderBST(NodeBST *root);
 bool checkIfKeyExistBST(NodeBST *root, int key);
 NodeBST *deleteNodeBST(NodeBST *root, int key);
 void findMinMaxBST(NodeBST *node);
-NodeBST *rotateRight(NodeBST *node);
-NodeBST *rotateLeft(NodeBST *node);
+NodeBST *balanceBST(NodeBST *root);
