@@ -116,11 +116,12 @@ int bstToVine(NodeBST *grand)
     return count;
 }
 
-void compress(NodeBST *grand, int m)
+void compress(NodeBST *grand, int numberOfNodes)
 {
     NodeBST *tmp = grand->right;
 
-    for (int i = 0; i < m; i++)
+    // chuj wie co tu sie dzieje
+    for (int i = 0; i < numberOfNodes; i++)
     {
         NodeBST *oldTmp = tmp;
         tmp = tmp->right;
@@ -139,12 +140,12 @@ NodeBST *balanceBST(NodeBST *root)
     grand->right = root;
 
     int count = bstToVine(grand);
-    int m = pow(2, log2(count + 1)) - 1;
-    compress(grand, count - m);
+    int numberOfNodes = pow(2, log2(count + 1)) - 1;
+    compress(grand, count - numberOfNodes);
 
-    for (m = m / 2; m > 0; m /= 2)
+    for (numberOfNodes = numberOfNodes / 2; numberOfNodes > 0; numberOfNodes /= 2)
     {
-        compress(grand, m);
+        compress(grand, numberOfNodes);
     }
     return grand->right;
 }
