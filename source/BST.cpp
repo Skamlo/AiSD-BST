@@ -32,6 +32,17 @@ NodeBST *insertBST(NodeBST *root, int key)
     return root;
 }
 
+NodeBST *createBST(std::vector<int> &arr)
+{
+    NodeBST *root = nullptr;
+
+    for (int i = 0; i < arr.size(); ++i)
+    {
+        root = insertBST(root, arr[i]);
+    }
+    return root;
+}
+
 bool checkIfKeyExistBST(NodeBST *root, int key)
 {
     if (root == nullptr)
@@ -91,6 +102,26 @@ NodeBST *deleteNodeBST(NodeBST *root, int key)
     }
 }
 
+void rotateRight(NodeBST *&grand, NodeBST *&tmp)
+{
+    NodeBST *oldTmp = tmp;
+    tmp = tmp->left;
+    oldTmp->left = tmp->right;
+    tmp->right = oldTmp;
+    grand->right = tmp;
+}
+
+void rotateLeft(NodeBST *&grand, NodeBST *&tmp)
+{
+    NodeBST *oldTmp = tmp;
+    tmp = tmp->right;
+    grand->right = tmp;
+    oldTmp->right = tmp->left;
+    tmp->left = oldTmp;
+    grand = tmp;
+    tmp = tmp->right;
+}
+
 int bstToVine(NodeBST *grand)
 {
     int count = 0;
@@ -99,11 +130,7 @@ int bstToVine(NodeBST *grand)
     {
         if (tmp->left)
         {
-            NodeBST *oldTmp = tmp;
-            tmp = tmp->left;
-            oldTmp->left = tmp->right;
-            tmp->right = oldTmp;
-            grand->right = tmp;
+            rotateRight(grand, tmp);
         }
         else
         {
@@ -116,36 +143,28 @@ int bstToVine(NodeBST *grand)
     return count;
 }
 
-void compress(NodeBST *grand, int numberOfNodes)
+void makeRotationsToReduceHeight(NodeBST *grand, int numberOfNodes)
 {
     NodeBST *tmp = grand->right;
-
-    // chuj wie co tu sie dzieje
     for (int i = 0; i < numberOfNodes; i++)
     {
-        NodeBST *oldTmp = tmp;
-        tmp = tmp->right;
-        grand->right = tmp;
-        oldTmp->right = tmp->left;
-        tmp->left = oldTmp;
-        grand = tmp;
-        tmp = tmp->right;
+        rotateLeft(grand, tmp);
     }
 }
 
 NodeBST *balanceBST(NodeBST *root)
 {
+    // in this version of algorithm, dummy root is created and actual root is asigned as right child
     NodeBST *grand = createNodeBST(0);
-
     grand->right = root;
 
     int count = bstToVine(grand);
     int numberOfNodes = pow(2, log2(count + 1)) - 1;
-    compress(grand, count - numberOfNodes);
+    makeRotationsToReduceHeight(grand, count - numberOfNodes);
 
     for (numberOfNodes = numberOfNodes / 2; numberOfNodes > 0; numberOfNodes /= 2)
     {
-        compress(grand, numberOfNodes);
+        makeRotationsToReduceHeight(grand, numberOfNodes);
     }
     return grand->right;
 }
@@ -175,15 +194,4 @@ void preorderBST(NodeBST *root)
     std::cout << root->key << "\t";
     preorderBST(root->left);
     preorderBST(root->right);
-}
-
-NodeBST *createBST(std::vector<int> &arr)
-{
-    NodeBST *root = nullptr;
-
-    for (int i = 0; i < arr.size(); ++i)
-    {
-        root = insertBST(root, arr[i]);
-    }
-    return root;
 }

@@ -5,6 +5,7 @@
 #include "BST.h"
 #include "AVL.h"
 #include "menuFunctions.h"
+#include <unistd.h>
 
 #define PLACEHOLDER 0
 #define AVL 1
@@ -15,7 +16,7 @@ bool isValidInputValues = true;
 
 int main(int argc, char *argv[])
 {
-    // loading tree type
+    // Loading tree type
     if (argc >= 3)
     {
         if ((!std::strcmp(argv[1], "--tree") || !std::strcmp(argv[1], "-t")) && !std::strcmp(argv[2], "AVL"))
@@ -34,11 +35,14 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // loading values
+    // Loading values
     std::string loadValues;
     std::vector<int> nodes;
-
-    std::cout << "Enter values: ";
+    bool inputFromFile = !isatty(fileno(stdin)); // if program reads from file some elements of menu are not printed
+    if (!inputFromFile)
+    {
+        std::cout << "Enter values: ";
+    }
     std::getline(std::cin, loadValues);
 
     if (textValidation(&loadValues))
@@ -47,11 +51,12 @@ int main(int argc, char *argv[])
     }
     else
     {
-        std::cout << "Incorrect input values\n" << std::endl;
+        std::cout << "Incorrect input values\n"
+                  << std::endl;
         isValidInputValues = false;
     }
 
-    // creating the tree
+    // Creating the tree
     NodeBST *rootBST = new NodeBST();
     NodeAVL *rootAVL = new NodeAVL();
     if (treeType == BST)
@@ -63,9 +68,16 @@ int main(int argc, char *argv[])
     std::string option;
     while (isValidInputValues)
     {
-        std::cout << "\naction> ";
+        if (!inputFromFile)
+            std::cout << "\naction> ";
+
+        if (inputFromFile)
+            std::cout << "\n";
+
         std::getline(std::cin, option);
         option = stringToLowercase(option);
+
+        // Parameters handling
         if (option == "findminmax")
         {
             if (treeType == BST)
@@ -152,6 +164,5 @@ int main(int argc, char *argv[])
         else
             std::cout << "This command does not exist." << std::endl;
     }
-
     return 0;
 }
