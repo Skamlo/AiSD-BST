@@ -57,13 +57,16 @@ int main(int argc, char *argv[])
     }
 
     // Creating the tree
+
     NodeBST *rootBST = new NodeBST();
     NodeAVL *rootAVL = new NodeAVL();
     if (treeType == BST)
         rootBST = createBST(nodes);
     else if (treeType == AVL)
+    {
+        std::sort(nodes.begin(), nodes.end());
         rootAVL = createAVL(nodes, 0, nodes.size() - 1);
-
+    }
     // Menu
     std::string option;
     while (isValidInputValues)

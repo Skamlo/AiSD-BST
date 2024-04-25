@@ -116,16 +116,13 @@ NodeAVL *insertNode(NodeAVL *root, int key)
 NodeAVL *createAVL(std::vector<int> &arr, int start, int end)
 {
     if (start > end)
-    {
         return nullptr;
-    }
 
-    NodeAVL *root = nullptr;
+    int mid = (start + end) / 2;
+    NodeAVL *root = createNodeAVL(arr[mid]);
 
-    for (int i = 0; i < arr.size(); i++)
-    {
-        root = insertNode(root, arr[i]);
-    }
+    root->left = createAVL(arr, start, mid - 1);
+    root->right = createAVL(arr, mid + 1, end);
 
     return root;
 }
