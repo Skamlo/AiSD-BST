@@ -7,6 +7,9 @@
 #include "menuFunctions.h"
 #include <unistd.h>
 
+#include <fstream>
+#include <chrono>
+
 #define PLACEHOLDER 0
 #define AVL 1
 #define BST 2
@@ -16,6 +19,12 @@ bool isValidInputValues = true;
 
 int main(int argc, char *argv[])
 {
+    std::ofstream outputFile{"output.txt", std::ios_base::app};
+    if (!outputFile.is_open())
+    {
+        std::cout << "Nie mozna otworzyc pliku.\n";
+        return 1;
+    }
     // Loading tree type
     if (argc >= 3)
     {
@@ -61,11 +70,21 @@ int main(int argc, char *argv[])
     NodeBST *rootBST = new NodeBST();
     NodeAVL *rootAVL = new NodeAVL();
     if (treeType == BST)
+    {
+        auto startTime = std::chrono::high_resolution_clock::now();
         rootBST = createBST(nodes);
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto measureTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+        outputFile << measureTime.count() << " creatingBST" << std::endl;
+    }
     else if (treeType == AVL)
     {
+        auto startTime = std::chrono::high_resolution_clock::now();
         std::sort(nodes.begin(), nodes.end());
         rootAVL = createAVL(nodes, 0, nodes.size() - 1);
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto measureTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+        outputFile << measureTime.count() << " creatingAVL" << std::endl;
     }
     // Menu
     std::string option;
@@ -83,17 +102,25 @@ int main(int argc, char *argv[])
         // Parameters handling
         if (option == "findminmax")
         {
+            auto startTime = std::chrono::high_resolution_clock::now();
             if (treeType == BST)
                 findMinMaxBST(rootBST);
             else if (treeType == AVL)
                 findMinMaxAVL(rootAVL);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto measureTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+            outputFile << measureTime.count() << " findminmax" << std::endl;
         }
         else if (option == "print")
         {
+            auto startTime = std::chrono::high_resolution_clock::now();
             if (treeType == BST)
                 printBST(rootBST);
             else if (treeType == AVL)
                 printAVL(rootAVL);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto measureTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+            outputFile << measureTime.count() << " printing" << std::endl;
         }
         else if (option == "delete")
         {
@@ -139,6 +166,7 @@ int main(int argc, char *argv[])
         }
         else if (option == "rebalance")
         {
+            auto startTime = std::chrono::high_resolution_clock::now();
             if (treeType == BST)
             {
                 rootBST = balanceBST(rootBST);
@@ -148,6 +176,9 @@ int main(int argc, char *argv[])
             {
                 std::cout << "This command does not exist." << std::endl;
             }
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto measureTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+            outputFile << measureTime.count() << " rebalance" << std::endl;
         }
         else if (option == "help")
         {
@@ -162,6 +193,7 @@ int main(int argc, char *argv[])
         }
         else if (option == "exit")
         {
+            outputFile.close();
             break;
         }
         else
