@@ -3,7 +3,8 @@ import random
 
 def generate_file(filename, length):
     with open(filename, 'w') as file:
-        random_numbers = [str(random.randint(1, 10000)) for _ in range(length)]
+        random_numbers = [str(random.randint(1, 500000))
+                          for _ in range(length)]
         file.write(' '.join(random_numbers))
         file.write("\nprint")
         file.write("\nrebalance")

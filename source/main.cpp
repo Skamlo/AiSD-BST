@@ -19,7 +19,9 @@ bool isValidInputValues = true;
 
 int main(int argc, char *argv[])
 {
-    std::ofstream outputFile{"output.txt", std::ios_base::app};
+    // Handle file with benchmark result
+    std::ofstream outputFile{"output.csv", std::ios_base::app};
+
     if (!outputFile.is_open())
     {
         std::cout << "Nie mozna otworzyc pliku.\n";
@@ -75,7 +77,7 @@ int main(int argc, char *argv[])
         rootBST = createBST(nodes);
         auto endTime = std::chrono::high_resolution_clock::now();
         auto measureTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-        outputFile << measureTime.count() << " creatingBST" << std::endl;
+        outputFile << measureTime.count() << " creatingBST " << nodes.size() << std::endl;
     }
     else if (treeType == AVL)
     {
@@ -84,7 +86,7 @@ int main(int argc, char *argv[])
         rootAVL = createAVL(nodes, 0, nodes.size() - 1);
         auto endTime = std::chrono::high_resolution_clock::now();
         auto measureTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-        outputFile << measureTime.count() << " creatingAVL" << std::endl;
+        outputFile << measureTime.count() << " creatingAVL " << nodes.size() << std::endl;
     }
     // Menu
     std::string option;
@@ -109,7 +111,7 @@ int main(int argc, char *argv[])
                 findMinMaxAVL(rootAVL);
             auto endTime = std::chrono::high_resolution_clock::now();
             auto measureTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-            outputFile << measureTime.count() << " findminmax" << std::endl;
+            outputFile << measureTime.count() << " findminmax " << nodes.size() << std::endl;
         }
         else if (option == "print")
         {
@@ -120,7 +122,7 @@ int main(int argc, char *argv[])
                 printAVL(rootAVL);
             auto endTime = std::chrono::high_resolution_clock::now();
             auto measureTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-            outputFile << measureTime.count() << " printing" << std::endl;
+            outputFile << measureTime.count() << " printing " << nodes.size() << std::endl;
         }
         else if (option == "delete")
         {
@@ -178,7 +180,7 @@ int main(int argc, char *argv[])
             }
             auto endTime = std::chrono::high_resolution_clock::now();
             auto measureTime = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-            outputFile << measureTime.count() << " rebalance" << std::endl;
+            outputFile << measureTime.count() << " rebalance " << nodes.size() << std::endl;
         }
         else if (option == "help")
         {

@@ -146,6 +146,7 @@ int bstToVine(NodeBST *grand)
 void makeRotationsToReduceHeight(NodeBST *grand, int numberOfNodes)
 {
     NodeBST *tmp = grand->right;
+    // Traverse and left-rotate root m times
     for (int i = 0; i < numberOfNodes; i++)
     {
         rotateLeft(grand, tmp);
@@ -158,9 +159,11 @@ NodeBST *balanceBST(NodeBST *root)
     NodeBST *grand = createNodeBST(0);
     grand->right = root;
 
+    // getting node count and and the same time converting to vine
     int count = bstToVine(grand);
+
     int numberOfNodes = pow(2, log2(count + 1)) - 1;
-    makeRotationsToReduceHeight(grand, count - numberOfNodes);
+    makeRotationsToReduceHeight(grand, count - numberOfNodes); // rotation on last element
 
     for (numberOfNodes = numberOfNodes / 2; numberOfNodes > 0; numberOfNodes /= 2)
     {
