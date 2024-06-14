@@ -18,10 +18,9 @@ zostały wykonane na komputerze Apple Macbook Air z procesorem M2.
 [Github](https://github.com/Skamlo/AiSD-BST).**
 
 
-
-<div style="text-align: center">
+<p align="center">
     <img src="img_for_README/mem.jpg" style="width: 60%">
-</div>
+</p>
 <br><br>
 
 # Tworzenie drzewa BST
@@ -55,9 +54,9 @@ NodeBST *insertBST(NodeBST *root, int key)
 ```
 
 <br>
-<div style="text-align: center">
+<p align="center">
     <img src="img_for_README/BST.png" style="width: 60%">
-</div>
+</p>
 <br><br>
 
 # Tworzenie drzewa AVL
@@ -118,9 +117,9 @@ if (balanceCoef < -1 && key < root->right->key)
 
 
 <br>
-<div style="text-align: center">
+<p align="center">
     <img src="img_for_README/AVL.png" style="width: 60%">
-</div>
+</p>
 <br><br>
 
 # Badanie efektywności operacji
@@ -151,9 +150,9 @@ wygenerowane w instancjach 100, 1000, 10000, 100000, 200000, 300000,
 Pomiary widoczne na wykresach sa uśrednionymi wartościami 4 pomiarów.
 
 <br>
-<div style="text-align: center">
+<p align="center">
     <img src="graphs/graph.png" style="width: 100%">
-</div>
+</p>
 <br><br>
 
 Pomiary zgadzają się ze złożonościami teorytycznie omawianymi na
